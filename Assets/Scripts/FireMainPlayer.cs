@@ -1,43 +1,65 @@
+using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class FireMainPlayer : MonoBehaviour
 {
     public float speed = 10f;
-    
-    public MainPlayer player_facing;
-    public int dir = 1;
+    private Vector2 moveDirection = Vector2.zero;
+    private Rigidbody2D rb;
+    public Animator animator;
+    private BoxCollider2D boxCollider;
+    private SpriteRenderer spriteRenderer;
+
+    public float _dir;
+
+    public void SetDirection(float direction)
+    {
+        _dir = direction;
+        moveDirection = new Vector2(direction, 0);
+    }
 
     private void Awake()
     {
-        player_facing = GetComponent<MainPlayer>();
-    }
-    public void OnBecameInvisible()
-    {
-        Debug.Log("YA NO ME VEN LAS CÁMARAS");
+        rb = GetComponent<Rigidbody2D>();
+        boxCollider = GetComponent<BoxCollider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        rb.gravityScale = 0;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        gameObject.SetActive(false);
-    }
     void Update()
     {
-        
-        float facing = player_facing.moveInput;
-        if (facing < 0)
+        if(_dir > 0)
         {
-            dir = -1;
-            Debug.Log("Entre 1");
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
-        if(facing > 0)
+        else if(_dir < 0)
         {
-            Debug.Log("Entre 2");
-            dir = 1;
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
-        transform.position += new Vector3(dir * speed * Time.deltaTime, 0, 0);
+
+        rb.linearVelocity = moveDirection * speed;
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
         
-        
-        //transform.position += Vector3.left * Time.deltaTime * speed;
-        
+        if(collision.gameObject.GetComponent<MainPlayer>() != null)
+        {
+            boxCollider.enabled = false;
+        }
+        else
+        {
+            boxCollider.enabled = true;
+            Debug.Log("Entre en contacto");
+            StartCoroutine(DisableFire(0.2f));
+        }
+    }
+
+    private IEnumerator DisableFire(float seconds)
+    {
+        animator.Play("Explotion");
+        yield return new WaitForSeconds(seconds);
+        boxCollider.enabled = false;
+        spriteRenderer.enabled = false;
     }
 }

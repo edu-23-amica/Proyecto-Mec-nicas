@@ -3,14 +3,13 @@ using UnityEngine;
 
 public class MainPlayer : MonoBehaviour
 {
-
     public float speed = 3f;
-    public float jumpForce = 7f;
+    public float moveInput;
     public Animator animator;
     public new Rigidbody2D rigidbody2D;
+    public float jumpForce = 8f;
     public bool isOnGround;
-    public float moveInput;
-
+    public FireBallSpawner spawner;
 
     private void Awake()
     {
@@ -24,41 +23,39 @@ public class MainPlayer : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        //float
         moveInput = Input.GetAxis("Horizontal");
-        Debug.Log(moveInput);
-        animator.SetFloat("Speed", moveInput);
+        animator.SetFloat("Speed", Mathf.Abs(moveInput)); 
 
         if (moveInput > 0)
         {
-            transform.localScale = new Vector3(5, 5, 5); // mira a la derecha
-
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
         else if (moveInput < 0)
         {
-            transform.localScale = new Vector3(-5, 5, 5); // mira a la izquierda
-
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
 
-        if(Input.GetKeyDown(KeyCode.UpArrow) && isOnGround)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && isOnGround)
         {
             isOnGround = false;
             animator.Play("Jump");
             rigidbody2D.linearVelocity = new Vector2(rigidbody2D.linearVelocity.x, jumpForce);
         }
-        /*
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            float direction = Mathf.Sign(transform.localScale.x);
             animator.Play("Attack");
+            spawner.SpawnFireball(direction);
         }
-        */
     }
 
     private void FixedUpdate()
     {
         rigidbody2D.linearVelocity = new Vector2(Input.GetAxis("Horizontal") * speed, rigidbody2D.linearVelocity.y);
     }
+
 }

@@ -1,18 +1,15 @@
 using UnityEngine;
 
-public class ObstacleSpawner : MonoBehaviour
+public class FireBallSpawner : MonoBehaviour
 {
-    public MainPlayer player;
-    public FireBallPooling generatorObstacle;  
-    public Transform playerTransform;
-
+    public FireBallPooling generatorObstacle;
+    public Transform firePoint;
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            player.animator.Play("Attack");
-            generatorObstacle.GetObject(playerTransform);
-        }
+ 
+    }
+    public void SpawnFireball(float direction)
+    {
+        generatorObstacle.GetObject(firePoint, direction);
     }
 }

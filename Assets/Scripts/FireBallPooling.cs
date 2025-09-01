@@ -5,6 +5,7 @@ public class FireBallPooling : MonoBehaviour
     public int objectCount = 10;
     public GameObject prefabObject;
     public List<GameObject> createdObjects;
+    public int attackIndex = 0;
 
     private void Awake()
     {
@@ -15,13 +16,18 @@ public class FireBallPooling : MonoBehaviour
     {
         for (int i = 0; i < objectCount; i++)
         {
-            GameObject instancedObject = Instantiate(prefabObject);
-            instancedObject.SetActive(false);
-            createdObjects.Add(instancedObject);
+            if(attackIndex < 10)
+            {
+                GameObject instancedObject = Instantiate(prefabObject);
+                instancedObject.SetActive(false);
+                createdObjects.Add(instancedObject);
+                attackIndex++;
+            }
+            
         }
     }
 
-    public void GetObject(Transform point)
+    public void GetObject(Transform point, float direction) 
     {
         for (int i = 0; i < createdObjects.Count; i++)
         {
@@ -31,6 +37,8 @@ public class FireBallPooling : MonoBehaviour
                 createdObjects[i].transform.position = point.position;
                 createdObjects[i].transform.rotation = point.rotation;
                 createdObjects[i].SetActive(true);
+                createdObjects[i].GetComponent<FireMainPlayer>().SetDirection(direction); 
+                attackIndex--;
                 return;
             }
         }
