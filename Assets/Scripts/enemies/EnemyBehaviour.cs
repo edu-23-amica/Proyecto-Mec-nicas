@@ -23,9 +23,6 @@ public class EnemyBehaviour : MonoBehaviour
         Debug.DrawRay(backEyesight.position, transform.right * -100, Color.red);
         Debug.DrawRay(eyesight.position, transform.right * 100, Color.blue);
 
-        Debug.Log(hitL.collider?.gameObject.name);
-        Debug.Log(hitR.collider?.gameObject.name);
-
         if ((!hitL.collider || hitL.collider.gameObject != PlayerLocator.Player)
         && (!hitR.collider || hitR.collider.gameObject != PlayerLocator.Player)) // Can't see player
         {
@@ -48,6 +45,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     void SetState(EnemyState newState)
     {
+        Debug.Log("State is: " + state);
         if (state == newState) return;
         state = newState;
         stateChanged?.Invoke();
