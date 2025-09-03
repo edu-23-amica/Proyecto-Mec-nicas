@@ -106,6 +106,7 @@ MonoBehaviour:
   speed: 10
   animator: {fileID: -6660943762820014171}
   _dir: 0
+  damage: 1
 --- !u!50 &5888879007732220985
 Rigidbody2D:
   serializedVersion: 5
