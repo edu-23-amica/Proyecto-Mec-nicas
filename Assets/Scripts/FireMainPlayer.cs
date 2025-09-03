@@ -13,6 +13,8 @@ public class FireMainPlayer : MonoBehaviour
 
     public float _dir;
 
+    public int damage;
+
     public void SetDirection(float direction)
     {
         _dir = direction;
@@ -29,11 +31,11 @@ public class FireMainPlayer : MonoBehaviour
 
     void Update()
     {
-        if(_dir > 0)
+        if (_dir > 0)
         {
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
-        else if(_dir < 0)
+        else if (_dir < 0)
         {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
@@ -42,8 +44,8 @@ public class FireMainPlayer : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        
-        if(collision.gameObject.GetComponent<MainPlayer>() != null)
+
+        if (collision.gameObject.GetComponent<MainPlayer>() != null)
         {
             boxCollider.enabled = false;
         }
@@ -52,6 +54,11 @@ public class FireMainPlayer : MonoBehaviour
             boxCollider.enabled = true;
             Debug.Log("Entre en contacto");
             StartCoroutine(DisableFire(0.2f));
+        }
+
+        if (collision.gameObject.TryGetComponent(out EnemyHealth eh))
+        {
+            eh.DealDamage(damage);
         }
     }
 
