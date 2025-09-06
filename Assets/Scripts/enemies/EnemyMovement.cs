@@ -31,19 +31,18 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+
+        animator.SetBool("move", shouldMove);
         if (shouldMove)
         {
             int dir =
                 PlayerLocator.Player.transform.position.x < transform.position.x
                 ? -1
                 : 1;
-            animator.SetFloat("speed", dir);
             flippable.localScale = new Vector3(dir, 1, 1);
-            rb.linearVelocity = dir * speed * Time.fixedDeltaTime * Vector2.right;
-        }
-        else
-        {
-            animator.SetFloat("speed", 0);
+            rb.linearVelocity =
+                dir * speed * Time.fixedDeltaTime * Vector2.right
+                + rb.linearVelocityY * Vector2.up;
         }
     }
 }

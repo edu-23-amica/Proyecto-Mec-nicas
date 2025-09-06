@@ -619,7 +619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5e20700a179a44099f4fb64a58e61f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 100
 --- !u!1 &154593943
 GameObject:
   m_ObjectHideFlags: 0
@@ -2904,6 +2904,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1646530533114685606, guid: ce542de7e33d58948bc099fbcfc60d34, type: 3}
+      propertyPath: damage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1646530533114685606, guid: ce542de7e33d58948bc099fbcfc60d34, type: 3}
+      propertyPath: attackCooldown
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7171532018472308366, guid: ce542de7e33d58948bc099fbcfc60d34, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.54
