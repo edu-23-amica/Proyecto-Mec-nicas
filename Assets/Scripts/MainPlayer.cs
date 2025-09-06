@@ -11,9 +11,13 @@ public class MainPlayer : MonoBehaviour
     public bool isOnGround;
     public FireBallSpawner spawner;
 
+    public delegate void OnDamage();
+    public OnDamage onDamage;
+
     private void Awake()
     {
         rigidbody2D = gameObject.GetComponent<Rigidbody2D>();
+        onDamage += ActivateHurtAnimation;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -56,6 +60,11 @@ public class MainPlayer : MonoBehaviour
     private void FixedUpdate()
     {
         rigidbody2D.linearVelocity = new Vector2(Input.GetAxis("Horizontal") * speed, rigidbody2D.linearVelocity.y);
+    }
+
+    public void ActivateHurtAnimation()
+    {
+        animator.Play("Hurt");
     }
 
 }

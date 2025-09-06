@@ -17,6 +17,9 @@ public class PlayerHealth : MonoBehaviour
     public delegate void OnRecover();
     public OnRecover onRecover;
 
+    private MainPlayer player;
+    
+
 
     void Awake()
     {
@@ -24,7 +27,7 @@ public class PlayerHealth : MonoBehaviour
     }
     void Start()
     {
-        
+        player = FindFirstObjectByType<MainPlayer>();
         onDeath += ActionsOnDeath;
        
     }
@@ -34,6 +37,7 @@ public class PlayerHealth : MonoBehaviour
         health -= damage;
         Debug.Log("Player health is now: " + health);
         onHurt?.Invoke();
+        player.onDamage?.Invoke();
         if (health <= 0)
         {
             onDeath?.Invoke();
