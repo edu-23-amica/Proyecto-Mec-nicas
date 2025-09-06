@@ -14,10 +14,19 @@ public class PlayerHealth : MonoBehaviour
     public delegate void OnHurt();
     public OnDeath onHurt;
 
-    void Start()
+    public delegate void OnRecover();
+    public OnRecover onRecover;
+
+
+    void Awake()
     {
         health = maxHealth;
+    }
+    void Start()
+    {
+        
         onDeath += ActionsOnDeath;
+       
     }
 
     public void DealDamage(int damage)
@@ -30,6 +39,15 @@ public class PlayerHealth : MonoBehaviour
             onDeath?.Invoke();
         }
     }
+
+    public void Recover()
+    {
+        health++;
+        onRecover?.Invoke();
+        Debug.Log("Player recovered life: " + health);
+    }
+
+  
 
     void ActionsOnDeath()
     {
