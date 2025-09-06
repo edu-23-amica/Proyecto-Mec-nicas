@@ -24,6 +24,7 @@ public class EnemyHealth : MonoBehaviour
     public void DealDamage(int damage)
     {
         health -= damage;
+        Debug.Log("vida enemigo: " + health);
         onHurt?.Invoke();
         if (health <= 0)
         {

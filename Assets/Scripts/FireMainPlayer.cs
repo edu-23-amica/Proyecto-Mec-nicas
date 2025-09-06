@@ -13,7 +13,7 @@ public class FireMainPlayer : MonoBehaviour
 
     public float _dir;
 
-    public int damage;
+    public int damage = 1;
 
     public void SetDirection(float direction)
     {
@@ -65,8 +65,9 @@ public class FireMainPlayer : MonoBehaviour
     private IEnumerator DisableFire(float seconds)
     {
         animator.Play("Explotion");
-        yield return new WaitForSeconds(seconds);
         boxCollider.enabled = false;
+        yield return new WaitForSeconds(seconds);
+        //boxCollider.enabled = false;
         spriteRenderer.enabled = false;
     }
 }

@@ -6,6 +6,7 @@ public class FireBallPooling : MonoBehaviour
     public GameObject prefabObject;
     public List<GameObject> createdObjects;
     public int attackIndex = 0;
+    public FireCharges fireUI;
 
     private void Awake()
     {
@@ -22,6 +23,7 @@ public class FireBallPooling : MonoBehaviour
                 instancedObject.SetActive(false);
                 createdObjects.Add(instancedObject);
                 attackIndex++;
+                
             }
             
         }
@@ -39,9 +41,15 @@ public class FireBallPooling : MonoBehaviour
                 createdObjects[i].SetActive(true);
                 createdObjects[i].GetComponent<FireMainPlayer>().SetDirection(direction); 
                 attackIndex--;
+                
                 return;
             }
         }
+    }
+
+    private void Update()
+    {
+        fireUI.UpdateScore(attackIndex);
     }
 
 }

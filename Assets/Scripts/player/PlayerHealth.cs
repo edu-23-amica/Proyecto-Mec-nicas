@@ -34,6 +34,6 @@ public class PlayerHealth : MonoBehaviour
     void ActionsOnDeath()
     {
         // Desactivar al main player al morir
-        // gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 }
