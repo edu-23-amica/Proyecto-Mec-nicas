@@ -4,16 +4,16 @@ using UnityEngine.UI;
 public class HealthBarEnemies : MonoBehaviour
 {
     public Image healthBar;
-    private EnemyHealth enemy;
+    public EnemyHealth enemy;
 
     private void Start()
     {
-        enemy = FindFirstObjectByType<EnemyHealth>();
+        // enemy = FindFirstObjectByType<EnemyHealth>();
         if (enemy != null)
         {
 
             enemy.onHurt += UpdateHealthBar;
-  
+
             UpdateHealthBar();
         }
 

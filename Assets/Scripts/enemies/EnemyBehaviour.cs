@@ -2,6 +2,7 @@ using System.Linq;
 using UnityEditor.Rendering.Universal;
 using UnityEngine;
 
+[RequireComponent(typeof(EnemyHealth))]
 public class EnemyBehaviour : MonoBehaviour
 {
     [SerializeField]
@@ -18,8 +19,17 @@ public class EnemyBehaviour : MonoBehaviour
     public delegate void StateChanged();
     public StateChanged stateChanged;
 
+    private Collider2D collider;
+
+    void Start()
+    {
+        GetComponent<EnemyHealth>().onDeath += HasDied;
+        collider = GetComponent<Collider2D>();
+    }
+
     void Update()
     {
+        if (state == EnemyState.Dead) return;
         RaycastHit2D[] hitL = Physics2D.RaycastAll(backEyesight.position, transform.right * -1, 100f);
         RaycastHit2D[] hitR = Physics2D.RaycastAll(eyesight.position, transform.right, 100f);
         Debug.DrawRay(backEyesight.position, transform.right * -100, Color.red);
@@ -55,5 +65,11 @@ public class EnemyBehaviour : MonoBehaviour
         if (state == newState) return;
         state = newState;
         stateChanged?.Invoke();
+    }
+
+    void HasDied()
+    {
+        SetState(EnemyState.Dead);
+        collider.enabled = false;
     }
 }

@@ -9,6 +9,8 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField]
     float attackCooldown;
     [SerializeField]
+    float attackDelay;
+    [SerializeField]
     Transform attackTLCorner;
     [SerializeField]
     Transform attackBRCorner;
@@ -30,30 +32,29 @@ public class EnemyAttack : MonoBehaviour
     {
         if (canAttack && behaviour.State == EnemyState.Attacking)
         {
-            Attack();
+            StartCoroutine(AttackCoroutine());
         }
     }
 
-    void Attack()
+    IEnumerator AttackCoroutine()
     {
-        animator.SetTrigger("attack");
-        Collider2D[] collisions =
-            Physics2D.OverlapAreaAll(attackTLCorner.position, attackBRCorner.position);
-        foreach (Collider2D coll in collisions)
+        if (canAttack)
         {
-            if (coll.TryGetComponent(out PlayerHealth ph))
+            canAttack = false;
+            animator.SetTrigger("attack");
+            yield return new WaitForSeconds(attackDelay);
+            Collider2D[] collisions =
+                Physics2D.OverlapAreaAll(attackTLCorner.position, attackBRCorner.position);
+            foreach (Collider2D coll in collisions)
             {
-                ph.DealDamage(damage);
+                if (coll.TryGetComponent(out PlayerHealth ph))
+                {
+                    ph.DealDamage(damage);
+                }
             }
+
+            yield return new WaitForSeconds(attackCooldown);
+            canAttack = true;
         }
-
-        StartCoroutine(AttackCooldown());
-    }
-
-    IEnumerator AttackCooldown()
-    {
-        canAttack = false;
-        yield return new WaitForSeconds(attackCooldown);
-        canAttack = true;
     }
 }

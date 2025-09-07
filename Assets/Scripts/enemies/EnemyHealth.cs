@@ -1,10 +1,14 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
     [SerializeField]
     private int maxHealth;
+    [SerializeField]
+    private float timeToDeath;
     private int health;
+    private Animator animator;
 
     public int MaxHealth { get => maxHealth; }
     public int Health { get => health; }
@@ -22,8 +26,8 @@ public class EnemyHealth : MonoBehaviour
     }
     void Start()
     {
-        
-        onDeath += DeactivateOnDeath;
+        onDeath += StartDeathCoroutine;
+        animator = GetComponent<Animator>();
     }
 
     public void DealDamage(int damage)
@@ -37,8 +41,15 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-    void DeactivateOnDeath()
+    void StartDeathCoroutine()
     {
+        StartCoroutine(Death());
+    }
+
+    IEnumerator Death()
+    {
+        animator.Play("death");
+        yield return new WaitForSeconds(timeToDeath);
         gameObject.SetActive(false);
     }
 }
