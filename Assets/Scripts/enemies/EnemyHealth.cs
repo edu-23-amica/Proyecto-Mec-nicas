@@ -15,9 +15,14 @@ public class EnemyHealth : MonoBehaviour
     public OnDeath onHurt;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    void Awake()
     {
         health = maxHealth;
+    }
+    void Start()
+    {
+        
         onDeath += DeactivateOnDeath;
     }
 
