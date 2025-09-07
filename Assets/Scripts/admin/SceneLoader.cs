@@ -17,7 +17,6 @@ public class SceneLoader : MonoBehaviour
     }
     public static void LoadWinState()
     {
-        // TODO: No hay win state todavia
-        // SceneManager.LoadScene(2);
+        SceneManager.LoadScene(3);
     }
 }
