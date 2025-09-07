@@ -3,8 +3,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float tiempoBala = 3f;
-    public int daño = 2;
-    public PlayerHealth ph;
+    public int damage = 2;
     void Start()
     {
         Destroy(gameObject, tiempoBala);
@@ -12,11 +11,10 @@ public class Bullet : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.TryGetComponent(out PlayerHealth ph))
         {
             Destroy(gameObject);
-            ph.DealDamage(daño);
+            ph.DealDamage(damage);
         }
-
     }
 }
