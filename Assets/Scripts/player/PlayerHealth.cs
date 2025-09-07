@@ -18,7 +18,7 @@ public class PlayerHealth : MonoBehaviour
     public OnRecover onRecover;
 
     private MainPlayer player;
-    
+
 
 
     void Awake()
@@ -29,7 +29,7 @@ public class PlayerHealth : MonoBehaviour
     {
         player = FindFirstObjectByType<MainPlayer>();
         onDeath += ActionsOnDeath;
-       
+
     }
 
     public void DealDamage(int damage)
@@ -51,11 +51,14 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("Player recovered life: " + health);
     }
 
-  
+
 
     void ActionsOnDeath()
     {
         // Desactivar al main player al morir
         gameObject.SetActive(false);
+
+        // Cargar game Over
+        SceneLoader.LoadLoseState();
     }
 }
