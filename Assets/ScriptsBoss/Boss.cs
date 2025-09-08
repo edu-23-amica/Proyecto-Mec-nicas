@@ -17,6 +17,8 @@ public class Boss : MonoBehaviour
     [Header("Config Raycast")]
     public Transform rayOrigin;
     public float rayDistance = 20f;
+    public float raycastAttackCooldown = 4f;
+    private float raycastTimer = 0f;
 
     [Header("Config disparo")]
     public float randomShotIntervalMin = 2f;
@@ -39,6 +41,7 @@ public class Boss : MonoBehaviour
     void Update()
     {
         teleportTimer -= Time.deltaTime;
+        raycastTimer -= Time.deltaTime;
         if (teleportTimer <= 0f)
         {
             animator.SetTrigger("teleport");
@@ -50,10 +53,11 @@ public class Boss : MonoBehaviour
             Vector2 direction = (player.position - rayOrigin.position).normalized;
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin.position, direction, rayDistance);
 
-            if (hit.collider != null && hit.collider.CompareTag("Player"))
+            if (hit.collider != null && hit.collider.CompareTag("Player") && raycastTimer <= 0f)
             {
                 storedShootDirection = direction;
                 animator.SetTrigger("attack");
+                raycastTimer = raycastAttackCooldown;
             }
         }
 
@@ -79,14 +83,11 @@ public class Boss : MonoBehaviour
     {
         if (projectilePrefab != null && firePoint != null)
         {
-            GameObject bullet = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+            GameObject bullet = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
                 rb.linearVelocity = storedShootDirection.normalized * projectileSpeed;
-
-                float angle = Mathf.Atan2(storedShootDirection.y, storedShootDirection.x) * Mathf.Rad2Deg;
-                bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle + 180f);
             }
         }
     }
@@ -95,5 +96,6 @@ public class Boss : MonoBehaviour
     {
         randomShotTimer = Random.Range(randomShotIntervalMin, randomShotIntervalMax);
     }
+
 }
 
