@@ -51,7 +51,6 @@ public class EnemyHealth : MonoBehaviour
     {
         animator.Play("death");
         yield return new WaitForSeconds(timeToDeath);
-        SceneLoader.LoadWinState();
         gameObject.SetActive(false);
     }
 }
