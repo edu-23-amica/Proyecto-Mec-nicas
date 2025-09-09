@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -50,6 +51,7 @@ public class EnemyHealth : MonoBehaviour
     {
         animator.Play("death");
         yield return new WaitForSeconds(timeToDeath);
+        SceneLoader.LoadWinState();
         gameObject.SetActive(false);
     }
 }

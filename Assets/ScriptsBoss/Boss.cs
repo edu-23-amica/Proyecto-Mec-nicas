@@ -3,7 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class Boss : MonoBehaviour
 {
-
     [Header("Config TP")]
     public Transform[] teleportPoints;
     public float teleportCooldown = 5f;
@@ -30,6 +29,9 @@ public class Boss : MonoBehaviour
 
     private Transform player;
     private Vector2 storedShootDirection;
+
+    // NUEVO: candado para no cargar la escena más de una vez
+    private bool dead = false;
 
     void Start()
     {
@@ -68,7 +70,6 @@ public class Boss : MonoBehaviour
             animator.SetTrigger("attack");
             ResetRandomShotTimer();
         }
-
     }
 
     public void DoTeleport()
@@ -97,5 +98,20 @@ public class Boss : MonoBehaviour
         randomShotTimer = Random.Range(randomShotIntervalMin, randomShotIntervalMax);
     }
 
-}
+    // =============================
+    // NUEVO: llama esto cuando tu vida llegue a 0
+    // =============================
+    public void OnDeath()
+    {
+        SceneLoader.LoadWinState(); // carga la escena 3
+        if (dead) return;
+        dead = true;
 
+        if (animator != null)
+        {
+            animator.SetTrigger("death"); // dispara la animación de muerte si existe
+        }
+
+        
+    }
+}
